@@ -1,0 +1,46 @@
+@startuml
+' Figure 1: System Definition — Boot Loader
+left to right direction
+skinparam shadowing false
+skinparam componentStyle rectangle
+
+actor User
+rectangle "Boot ROM" as BootROM
+
+rectangle "<<system>>\nBoot Loader" as BL #FFF4D6
+
+rectangle "I/O Device" as IO
+rectangle "Storage Device" as Storage
+rectangle "Memory" as Mem
+rectangle "Kernel" as Kernel
+
+'--- Left side (actors/sources) → Required interfaces on Boot Loader (socket style) ---
+() "User Input IF" as IF_User
+() "Boot IF"       as IF_Boot
+
+User   -right- IF_User
+IF_User -right- BL   ' socket at BL boundary
+
+BootROM -right- IF_Boot
+IF_Boot -right- BL   ' socket at BL boundary
+
+'--- Right side (devices) ← Provided interfaces from Boot Loader (lollipop style) ---
+() "I/O IF"      as IF_IO
+() "Storage IF"  as IF_Storage
+() "Memory IF"   as IF_Mem
+() "Kernel IF"   as IF_Kernel
+
+BL -right- IF_IO
+IF_IO -right- IO
+
+BL -right- IF_Storage
+IF_Storage -right- Storage
+
+BL -right- IF_Mem
+IF_Mem -right- Mem
+
+BL -right- IF_Kernel
+IF_Kernel -right- Kernel
+
+
+@enduml

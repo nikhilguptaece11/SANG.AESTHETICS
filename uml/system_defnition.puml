@@ -1,0 +1,44 @@
+@startuml
+title System Boundary — C2C Marketplace (Interfaces Only)
+left to right direction
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+'==== Actors (consumers of Marketplace interfaces) ===='
+actor Buyer
+actor Seller
+actor "Admin/Operator" as Admin
+actor "Trust & Safety Analyst" as TSA
+actor "Customer Support Agent" as CSA
+actor "External Partner" as Partner
+
+'==== System Under Design ===='
+rectangle "C2C Marketplace Platform" as MP
+
+'==== External Systems (their APIs are consumed by Marketplace) ===='
+cloud "Payment Processor / Escrow" as Pay
+cloud "KYC / ID Provider" as KYC
+cloud "Content Moderation" as Mod
+cloud "Logistics / Carriers" as Ship
+cloud "Tax / Compliance" as TaxS
+cloud "Notifications (Push/SMS/Email)" as Comm
+cloud "Ads / CRM Platforms" as CRM
+
+'==== Marketplace EXPOSES interfaces to actors ===='
+Buyer  --> MP : consumes\n"Client UI"
+Seller --> MP : consumes\n"Client UI"
+Admin  --> MP : consumes\n"Admin Console"
+TSA    --> MP : consumes\n"Trust & Safety Console"
+CSA    --> MP : consumes\n"Support Console"
+Partner --> MP : consumes\n"Public API"
+
+'==== Marketplace CONSUMES external system interfaces ===='
+MP --> Pay  : consumes\n"Payments/Escrow API"
+MP --> KYC  : consumes\n"KYC/AML API"
+MP --> Mod  : consumes\n"Moderation API"
+MP --> Ship : consumes\n"Logistics API"
+MP --> TaxS : consumes\n"Tax/Compliance API"
+MP --> Comm : consumes\n"Messaging API"
+MP --> CRM  : consumes\n"Ads/CRM API"
+
+@enduml

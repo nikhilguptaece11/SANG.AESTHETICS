@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scented Serenity Candles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .product-card {
+            transition: transform 0.3s ease-in-out;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: .3rem;
+        }
+        .navbar-nav {
+            gap: 2.7rem;
+        }
+        @media (max-width: 991.98px) {
+            .navbar-nav {
+                gap: 0.7rem;
+            }
+        }
+        /* Fixed size for images in heartCarousel */
+        #heartCarousel .carousel-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        /* Fixed size for images in peoneRoseCarousel */
+        #peoneRoseCarousel .carousel-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Scented Serenity</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+
+        <section id="home" class="jumbotron text-center">
+            <!-- Bootstrap Carousel Banner -->
+            <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80" class="d-block w-100" alt="Banner 1" style="height: 350px; object-fit: cover;">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=900&q=80" class="d-block w-100" alt="Banner 2" style="height: 350px; object-fit: cover;">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=900&q=80" class="d-block w-100" alt="Banner 3" style="height: 350px; object-fit: cover;">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=900&q=80" class="d-block w-100" alt="Banner 4" style="height: 350px; object-fit: cover;">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=900&q=80" class="d-block w-100" alt="Banner 5" style="height: 350px; object-fit: cover;">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </section>
+
+        
+
+        <section id="products" class="my-5">
+            <div class="d-flex justify-content-center mb-4">
+                <div style="min-width: 60vw;">
+                    <ul class="fragrance-list d-flex flex-wrap justify-content-between align-items-center mt-2" style="gap: 2.5rem; list-style: none; padding-left: 0; margin-bottom: 0;">
+                        <li>Sandalwood</li>
+                        <li>Rose</li>
+                        <li>Vanilla</li>
+                        <li>Blueberry <span style="color: #888; font-size: 0.85em; font-style: italic;">bestseller</span></li>
+                        <li>White Musk</li>
+                        <li>Jasmine</li>
+                        
+                    </ul>
+                </div>
+            </div>
+                <div style="margin-top: 2.5rem;"></div>
+            <h2 class="text-center mb-4">Our Signature Collection</h2>
+
+            <ul class="nav nav-tabs justify-content-center" id="productTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="diwali-tab" data-bs-toggle="tab" data-bs-target="#diwali" type="button" role="tab" aria-controls="diwali" aria-selected="true">Diwali Collection</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="earthy-tab" data-bs-toggle="tab" data-bs-target="#earthy" type="button" role="tab" aria-controls="earthy" aria-selected="false">Jar Candles</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="fresh-tab" data-bs-toggle="tab" data-bs-target="#fresh" type="button" role="tab" aria-controls="fresh" aria-selected="false">Classic Candles</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="gourmand-tab" data-bs-toggle="tab" data-bs-target="#gourmand" type="button" role="tab" aria-controls="gourmand" aria-selected="false">Coasters</button>
+                </li>
+            </ul>
+
+            <div class="tab-content mt-4" id="productTabsContent">
+
+                <div class="tab-pane fade show active" id="diwali" role="tabpanel" aria-labelledby="diwali-tab">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card h-100 product-card">
+                                <img src="https://via.placeholder.com/400x300.png?text=Rosewood+Bloom" class="card-img-top" alt="Rosewood Bloom Candle">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Rosewood Bloom</h5>
+                                    <p class="card-text">A romantic mix of fresh rose, sandalwood, and a hint of musk.</p>
+                                    <div class="mb-2">
+                                        <span class="text-muted text-decoration-line-through" style="font-size:1.1em;">₹28.00</span>
+                                        <span class="fw-bold text-success ms-2" style="font-size:1.2em;">₹22.00</span>
+                                        <span class="badge bg-success bg-opacity-25 text-success ms-2" style="font-size:0.78em; font-weight: 500; padding: 2px 7px 2px 7px; line-height: 1.1; vertical-align: middle; position: relative; top: -2px;">21% off</span>
+                                    </div>
+                                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 product-card">
+                                <img src="https://via.placeholder.com/400x300.png?text=Lavender+Fields" class="card-img-top" alt="Lavender Fields Candle">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Lavender Fields</h5>
+                                    <p class="card-text">Classic and calming, the pure essence of lavender.</p>
+                                    <h6 class="card-subtitle mb-2 text-muted">₹18.00</h6>
+                                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+
+                <div class="tab-pane fade" id="earthy" role="tabpanel" aria-labelledby="earthy-tab">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card h-100 product-card">
+                                <img src="https://via.placeholder.com/400x300.png?text=Sandalwood+Patchouli" class="card-img-top" alt="Sandalwood Patchouli Candle">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Sandalwood Patchouli</h5>
+                                    <p class="card-text">Deep, grounding notes of sandalwood and earthy patchouli.</p>
+                                    <h6 class="card-subtitle mb-2 text-muted">₹20.00</h6>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+
+                <div class="tab-pane fade" id="fresh" role="tabpanel" aria-labelledby="fresh-tab">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card h-100 product-card">
+                                <div id="peoneRoseCarousel" class="carousel slide" data-bs-ride="false">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img src="images/peone_single_pink.jpg" class="card-img-top" alt="Peone Rose">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="images/peone_coaster.jpg" class="card-img-top" alt="Peone Rose with Coaster">
+                                        </div>
+                                        
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#peoneRoseCarousel" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#peoneRoseCarousel" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Peone Rose</h5>
+                                    <p class="card-text">Delicate red-pink peony rose candle with lifelike petals, adding elegance and charm to any space!</p>                                    
+                                    <div class="mb-2">
+                                        <span class="text-muted text-decoration-line-through" style="font-size:1.1em;">₹28.00</span>
+                                        <span class="fw-bold text-success ms-2" style="font-size:1.2em;">₹22.00</span>
+                                        <span class="badge bg-success bg-opacity-25 text-success ms-2" style="font-size:0.78em; font-weight: 500; padding: 2px 7px 2px 7px; line-height: 1.1; vertical-align: middle; position: relative; top: -2px;">21% off</span>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card h-100 product-card">
+                                <div id="daisyCarousel" class="carousel slide" data-bs-ride="false">
+                                    <div class="carousel-inner">
+                                         <div class="carousel-item">
+                                            <img src="images/daisy_setof6_2.jpg" class="card-img-top" alt="Daisy Set of 6 - 2">
+                                        </div>
+                                        <div class="carousel-item active">
+                                            <img src="images/daisy_setof6.jpeg" class="card-img-top" alt="Daisy Set of 6 - 1">
+                                        </div>
+                                       
+                                        
+                                        
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#daisyCarousel" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#daisyCarousel" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Floating Daisy Candles (Set of 6)</h5>
+                                    <p class="card-text">Charming floating daisy candles with multiple colour options, perfect for serene decor!</p>
+                                    <div class="mb-2">
+                                        <span class="text-muted text-decoration-line-through" style="font-size:1.1em;">₹28.00</span>
+                                        <span class="fw-bold text-success ms-2" style="font-size:1.2em;">₹22.00</span>
+                                        <span class="badge bg-success bg-opacity-25 text-success ms-2" style="font-size:0.78em; font-weight: 500; padding: 2px 7px 2px 7px; line-height: 1.1; vertical-align: middle; position: relative; top: -2px;">21% off</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="card h-100 product-card">
+                                <div id="heartCarousel" class="carousel slide" data-bs-ride="false">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <img src="images/heart.jpg" class="card-img-top" alt="Heart Candle">
+                                        </div>
+                                        <div class="carousel-item">
+                                            <img src="images/heart_coaster.jpg" class="card-img-top" alt="Heart Candle with Coaster">
+                                        </div>
+                                        
+                                    </div>
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#heartCarousel" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#heartCarousel" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Heart Candle</h5>
+                                    <p class="card-text">Elegant heart-shaped candle with textured design, perfect for gifting or adding cozy decor!</p>
+                                    <div class="mb-2">
+                                        <span class="text-muted text-decoration-line-through" style="font-size:1.1em;">₹28.00</span>
+                                        <span class="fw-bold text-success ms-2" style="font-size:1.2em;">₹22.00</span>
+                                        <span class="badge bg-success bg-opacity-25 text-success ms-2" style="font-size:0.78em; font-weight: 500; padding: 2px 7px 2px 7px; line-height: 1.1; vertical-align: middle; position: relative; top: -2px;">21% off</span>
+                                    </div>
+                                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="gourmand" role="tabpanel" aria-labelledby="gourmand-tab">
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <div class="col">
+                            <div class="card h-100 product-card">
+                                <img src="https://via.placeholder.com/400x300.png?text=Warm+Spiced+Chai" class="card-img-top" alt="Warm Spiced Chai Candle">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Warm Spiced Chai</h5>
+                                    <p class="card-text">Inviting aroma of cinnamon, clove, and a hint of vanilla bean.</p>
+                                    <h6 class="card-subtitle mb-2 text-muted">₹17.00</h6>
+                                    <a href="#" class="btn btn-primary">Add to Cart</a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+
+            </div>
+        </section>
+
+        ---
+
+        <section id="about" class="my-5">
+            <h2 class="text-center mb-4">Our Story</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <p>At **Scented Serenity**, we believe a candle is more than just a light source. It's a way to create an atmosphere, evoke memories, and bring a sense of calm to your home. Each of our candles is hand-poured in small batches using 100% natural soy wax and lead-free cotton wicks, ensuring a clean and long-lasting burn.</p>
+                    <p>We are committed to quality and sustainability, using only premium fragrance oils and eco-friendly packaging. Thank you for supporting our small business and for letting us be a part of your daily moments of peace.</p>
+                </div>
+            </div>
+        </section>
+
+        ---
+
+        <section id="contact" class="my-5">
+            <h2 class="text-center mb-4">Get in Touch</h2>
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameInput" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="messageInput" class="form-label">Message</label>
+                            <textarea class="form-control" id="messageInput" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p>&copy; 2023 Scented Serenity. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</script>
+<script>
+// Enhanced gesture support for Peone Rose, Ocean Breeze1, and Ocean Breeze2 carousels (touch and mouse drag, no cyclic rotation)
+function addGestureSupport(carouselId) {
+    var carousel = document.getElementById(carouselId);
+    if (!carousel) return;
+    var startX = 0;
+    var isDown = false;
+    var carouselInner = carousel.querySelector('.carousel-inner');
+    var items = carouselInner ? carouselInner.querySelectorAll('.carousel-item') : [];
+
+    function getActiveIndex() {
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].classList.contains('active')) return i;
+        }
+        return 0;
+    }
+
+    function goToPrev() {
+        var idx = getActiveIndex();
+        if (idx > 0) {
+            bootstrap.Carousel.getOrCreateInstance(carousel).prev();
+        }
+    }
+    function goToNext() {
+        var idx = getActiveIndex();
+        if (idx < items.length - 1) {
+            bootstrap.Carousel.getOrCreateInstance(carousel).next();
+        }
+    }
+
+    // Touch events
+    carousel.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+    });
+    carousel.addEventListener('touchend', function(e) {
+        var endX = e.changedTouches[0].clientX;
+        var idx = getActiveIndex();
+        if (endX - startX > 50 && idx > 0) {
+            goToPrev();
+        } else if (startX - endX > 50 && idx < items.length - 1) {
+            goToNext();
+        }
+    });
+
+    // Mouse drag events (for desktop)
+    carousel.addEventListener('mousedown', function(e) {
+        isDown = true;
+        startX = e.clientX;
+    });
+    carousel.addEventListener('mouseup', function(e) {
+        if (!isDown) return;
+        isDown = false;
+        var endX = e.clientX;
+        var idx = getActiveIndex();
+        if (endX - startX > 50 && idx > 0) {
+            goToPrev();
+        } else if (startX - endX > 50 && idx < items.length - 1) {
+            goToNext();
+        }
+    });
+    carousel.addEventListener('mouseleave', function(e) {
+        isDown = false;
+    });
+
+    // Disable prev/next buttons at ends
+    function updateControls() {
+        var idx = getActiveIndex();
+        var prevBtn = carousel.querySelector('.carousel-control-prev');
+        var nextBtn = carousel.querySelector('.carousel-control-next');
+        if (prevBtn) prevBtn.style.display = idx === 0 ? 'none' : '';
+        if (nextBtn) nextBtn.style.display = idx === items.length - 1 ? 'none' : '';
+    }
+    carousel.addEventListener('slid.bs.carousel', updateControls);
+    updateControls();
+}
+document.addEventListener('DOMContentLoaded', function () {
+    addGestureSupport('peoneRoseCarousel');
+    addGestureSupport('daisyCarousel');
+    addGestureSupport('heartCarousel');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+@startuml
+title UC_02 — Listing Creation & Management (System Sequence Diagram)
+actor Seller
+box "system" #EFEFEF
+  participant "C2C Marketplace" as SYS
+end box
+participant "<<external>> Moderation" as MOD
+participant "<<external>> Risk Service" as RISK
+participant "<<external>> Search Index" as SEARCH
+
+Seller -> SYS: createDraft(details, images)
+activate SYS
+opt AI assist requested
+  SYS --> Seller: suggest(title/category/attributes, priceHints)
+end
+
+Seller -> SYS: publishListing(draftId)
+SYS -> MOD: checkContent(draft)
+SYS -> RISK: riskAssess(listing, seller)
+RISK --> SYS: decision(allow|challenge|block)
+MOD --> SYS: policyResult(pass|fail)
+
+alt Allowed
+  SYS -> SEARCH: index(listing)
+  SYS --> Seller: listingPublished(listingId)
+else Challenged/Blocked
+  SYS --> Seller: actionRequired(reason)
+end
+deactivate SYS
+@enduml

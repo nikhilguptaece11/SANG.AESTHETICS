@@ -1,0 +1,62 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Buyer as buyer #LightBlue
+actor Seller as seller #LightBlue
+actor Admin as moderator #LightBlue
+
+actor "Recommendation Engine (AI)" as RecEngine #LightGray
+actor "Fraud Detection Engine (AI)" as FraudEngine #LightGray
+actor "Payment Gateway11" as PayGateway #LightGray
+actor "Logistics Partner" as Logistics #LightGray
+actor "KYC Provider" as KYC #LightGray
+
+rectangle "C2C Marketplace System" {
+  
+  usecase "UC-1: Create Listing" as UC1
+  usecase "UC-2: Discover & Search" as UC2
+  usecase "UC-3: Advanced Chat & Negotiation" as UC3
+  usecase "UC-4: Seller Dashboard & Analytics" as UC4
+  usecase "UC-5: Recommendations & Personalization" as UC5
+  usecase "UC-6: Buyer Landing Page" as UC6
+  usecase "UC-7: Fraud Detection & Trust" as UC7
+  usecase "UC-8: Admin Moderation" as UC8
+  usecase "UC-2.4 Checkout with Escrow" as UC24
+  usecase "UC-2.5 Shipping & Logistics Integration" as UC25
+  usecase "UC-2.6 Returns & Dispute Resolution" as UC26
+  usecase "UC-2.7 Payments, Fees & Payouts" as UC27
+}
+
+'--- Primary actors on the left
+buyer --> UC2
+buyer --> UC3
+buyer --> UC5
+buyer --> UC6
+buyer --> UC24
+buyer --> UC26
+
+seller --> UC1
+seller --> UC3
+seller --> UC4
+seller --> UC27
+
+moderator --> UC8
+
+'--- Secondary actors on the right
+UC2 --> RecEngine
+UC5 --> RecEngine
+UC6 --> RecEngine
+
+UC3 --> FraudEngine
+UC7 --> FraudEngine
+UC24 --> FraudEngine
+
+UC24 --> PayGateway
+UC27 --> PayGateway
+
+UC25 --> Logistics
+UC1 --> KYC
+UC27 --> KYC
+
+@enduml

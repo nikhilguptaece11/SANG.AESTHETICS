@@ -1,0 +1,107 @@
+@startuml
+title System Boundary — C2C Marketplace (System Context)
+left to right direction
+skinparam componentStyle rectangle
+skinparam shadowing false
+skinparam rectangle {
+  BackgroundColor White
+  BorderColor Black
+}
+
+'=== Actors ===
+actor Buyer
+actor Seller
+actor "Trust & Safety Analyst" as TSA
+actor "Customer Support Agent" as CSA
+actor "Admin/Operator" as Admin
+
+'=== Client tier ===
+rectangle "Client Apps" as Clients {
+  component "Web App" as Web
+  component "iOS App" as iOS
+  component "Android App" as Android
+}
+
+cloud "CDN / Edge" as CDN
+Buyer --> Web
+Buyer --> iOS
+Buyer --> Android
+Seller --> Web
+Seller --> iOS
+Seller --> Android
+
+Web <-> CDN
+iOS <-> CDN
+Android <-> CDN
+
+'=== System boundary ===
+rectangle "C2C Marketplace Platform (System Boundary)" as Platform {
+  component "API Gateway / BFF" as APIGW
+
+  package "Core Domain Services" as Core {
+    component "Identity & KYC" as Auth
+    component "Listings Service" as Listings
+    component "Search & Relevance" as Search
+    component "Messaging & Offers" as Chat
+    component "Checkout & Escrow Orchestrator" as Checkout
+    component "Fulfillment & Tracking" as Fulfillment
+    component "Reviews & Reputation" as Reviews
+    component "Disputes & Mediation" as Disputes
+    component "Moderation & Risk" as Risk
+  }
+
+  package "Platform Capabilities" as Cap {
+    component "Notifications" as Notify
+    component "Experiments / Feature Flags" as Experiments
+    component "Observability & Audit" as Observability
+    component "Data & ML Platform\n(Events, Feature Store,\nRecs & Fraud Models)" as DML
+    component "Admin / Policy Console" as Console
+  }
+}
+
+' Client → platform
+CDN --> APIGW
+APIGW --> Auth
+APIGW --> Listings
+APIGW --> Search
+APIGW --> Chat
+APIGW --> Checkout
+APIGW --> Fulfillment
+APIGW --> Reviews
+APIGW --> Disputes
+APIGW --> Notify
+
+' Internal interactions (representative)
+Listings --> Search : index/update
+Chat --> Risk : safety checks
+Checkout --> Risk : risk scoring
+Disputes --> Risk : fraud linkage
+Core ..> DML : events/features
+Search ..> DML : signals
+Risk ..> DML : labels
+Console ..> Observability : audits/metrics
+
+'=== External systems (outside boundary) ===
+cloud "Payment Processor / Escrow" as Pay
+cloud "KYC / ID Provider" as KYC
+cloud "Content Moderation Provider" as Mod
+cloud "Logistics / Carriers" as Ship
+cloud "Tax / Compliance Service" as TaxS
+cloud "Push/SMS/Email Provider" as Comm
+cloud "Ad / CRM Platforms" as CRM
+
+' Platform ↔ external integrations
+Auth --> KYC
+Risk --> Mod
+Checkout --> Pay
+Checkout --> TaxS
+Fulfillment --> Ship
+Notify --> Comm
+Experiments --> CRM
+
+' Operators
+TSA --> Console
+CSA --> Console
+Admin --> Console
+
+@enduml

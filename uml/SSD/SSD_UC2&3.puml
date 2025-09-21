@@ -1,0 +1,49 @@
+@startuml
+title UC_02 — Advanced Search & Discovery & UC_03 - Recommendations
+autonumber
+actor Buyer
+
+
+box "system" #EFEFEF
+  participant "C2C Marketplace" as SYS
+end box
+
+== Home Screen ==
+Buyer -> SYS: Open app / Home
+activate SYS
+SYS -> SYS: Initialize session context (auth, locale, geo)
+SYS -> SYS: Prefetch personalization signals
+SYS -> SYS: Build home feed candidates
+
+SYS --> Buyer: Show personalized feed
+deactivate SYS
+
+== Query-based discovery ==
+Buyer -> SYS: Enter search(query, filters)
+activate SYS
+SYS -> SYS: Validate & sanitize inputs
+SYS -> SYS: Orchestrate search (lexical + semantic + geo)
+SYS -> SYS: Apply policy & availability filters
+SYS -> SYS: Re-rank (personalization, popularity, diversity)
+SYS -> SYS: Prepare facets & cache results
+' SYS -> SYS: Log search event/telemetry
+SYS --> Buyer: Search results + facets
+deactivate SYS
+
+' Loop like the bootloader’s “wait for input”
+loop [infinite] pagination / scroll
+  Buyer -> SYS: Load more(nextToken)
+  activate SYS
+  SYS -> SYS: Fetch next page & blend
+  SYS --> Buyer: Append results
+  deactivate SYS
+end
+
+'opt Save this search
+'  Buyer -> SYS: Create saved search(criteria)
+'  activate SYS
+'  SYS -> SYS: Persist subscription & trigger alerts
+'  SYS --> Buyer: Saved search created
+'  deactivate SYS
+'end
+@enduml

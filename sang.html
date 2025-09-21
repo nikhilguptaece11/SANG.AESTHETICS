@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scented Serenity Candles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .product-card {
+            transition: transform 0.3s ease-in-out;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: .3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Scented Serenity</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#products">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+
+        <section id="home" class="jumbotron text-center">
+            <h1 class="display-4">Discover Your Perfect Scent</h1>
+            <p class="lead">Hand-poured candles crafted with care, filling your space with tranquility and warmth.</p>
+            <a href="#products" class="btn btn-primary btn-lg">Shop Now</a>
+        </section>
+
+        ---
+
+        <section id="products" class="my-5">
+            <h2 class="text-center mb-4">Our Signature Collection</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                <div class="col">
+                    <div class="card h-100 product-card">
+                        <img src="images/hearts.jpeg" class="card-img-top" alt="Lavender Dream Candle">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Lavender Dream</h5>
+                            <p class="card-text">A soothing blend of French lavender and soft vanilla.</p>
+                            <h6 class="card-subtitle mb-2 text-muted">$18.00</h6>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card h-100 product-card">
+                        <img src="https://via.placeholder.com/400x300.png?text=Ocean+Breeze" class="card-img-top" alt="Ocean Breeze Candle">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Ocean Breeze</h5>
+                            <p class="card-text">Crisp and clean, with notes of sea salt and fresh air.</p>
+                            <h6 class="card-subtitle mb-2 text-muted">$19.50</h6>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card h-100 product-card">
+                        <img src="https://via.placeholder.com/400x300.png?text=Warm+Spiced+Chai" class="card-img-top" alt="Warm Spiced Chai Candle">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Warm Spiced Chai</h5>
+                            <p class="card-text">Inviting aroma of cinnamon, clove, and a hint of vanilla bean.</p>
+                            <h6 class="card-subtitle mb-2 text-muted">$17.00</h6>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        ---
+
+        <section id="about" class="my-5">
+            <h2 class="text-center mb-4">Our Story</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <p>At **Scented Serenity**, we believe a candle is more than just a light source. It's a way to create an atmosphere, evoke memories, and bring a sense of calm to your home. Each of our candles is hand-poured in small batches using 100% natural soy wax and lead-free cotton wicks, ensuring a clean and long-lasting burn.</p>
+                    <p>We are committed to quality and sustainability, using only premium fragrance oils and eco-friendly packaging. Thank you for supporting our small business and for letting us be a part of your daily moments of peace.</p>
+                </div>
+            </div>
+        </section>
+
+        ---
+
+        <section id="contact" class="my-5">
+            <h2 class="text-center mb-4">Get in Touch</h2>
+            <div class="row">
+                <div class="col-lg-6 mx-auto">
+                    <form>
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameInput" placeholder="Your Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailInput" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="messageInput" class="form-label">Message</label>
+                            <textarea class="form-control" id="messageInput" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="bg-light text-center py-4 mt-5">
+        <div class="container">
+            <p>&copy; 2023 Scented Serenity. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

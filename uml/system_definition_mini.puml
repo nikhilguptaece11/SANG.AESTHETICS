@@ -1,0 +1,72 @@
+@startuml
+title System Boundary — C2C Marketplace (Interfaces Only)
+left to right direction
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+'=== Actors consuming Marketplace-provided interfaces ===
+actor Buyer
+actor Seller
+actor "Admin/Operator" as Admin
+actor "Support Agent" as CSA
+
+
+rectangle "<<system>>\nC2C Marketplace" as MP #FFF5E6 {
+  ' Dummy note to increase rectangle size
+  note as N1
+
+  
+    
+    
+  end note
+}
+
+'--- Interfaces EXPOSED by the Marketplace (to actors) ---
+() "Admin Console" as IAdmin
+() "Support Console" as ISupport
+
+
+Buyer --(0--# MP
+Seller --(0--# MP
+
+Admin  --( IAdmin
+CSA    --( ISupport
+
+
+IAdmin  -- MP
+ISupport -- MP
+
+'=== External systems whose APIs are CONSUMED by the Marketplace ===
+component "Payment Processor /\nEscrow" as Pay
+component "KYC / Identity" as KYC
+component "Content Moderation" as Mod
+'component "Logistics /\nCarriers" as Ship
+'component "Tax /\nCompliance" as TaxS
+'component "Notifications\n(Push/SMS/Email)" as Comm
+'component "Ads / CRM" as CRM
+
+'--- Interfaces REQUIRED by the Marketplace (from externals) ---
+() "Payments API"   as IPay
+() "KYC API"        as IKYC
+() "Moderation API" as IMod
+'() "Logistics API"  as IShip
+'() "Tax API"        as ITax
+'() "Messaging API"  as IComm
+'() "Ads/CRM API"    as ICRM
+
+MP -- IPay
+MP -- IKYC
+MP -- IMod
+'MP -- IShip
+'MP -- ITax
+'MP -- IComm
+'MP -- ICRM
+
+IPay  -- Pay
+IKYC  -- KYC
+IMod  -- Mod
+'IShip -- Ship
+'ITax  -- TaxS
+'IComm -- Comm
+'ICRM  -- CRM
+@enduml
