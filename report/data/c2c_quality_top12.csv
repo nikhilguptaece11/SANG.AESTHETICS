@@ -1,0 +1,13 @@
+Attribute,Category,Overall I (avg),Overall D (avg),Priority = I_avg * D_avg
+Fraud & abuse prevention,Security,2.6,2.0,5.2
+Search relevance & personalization,Usability,2.6,2.0,5.2
+Page & search response time (p95),Performance,2.4,2.0,4.8
+Data integrity & consistency,Reliability,2.4,2.0,4.8
+Data privacy & DPDP compliance,Security,2.4,2.0,4.8
+Service availability (uptime SLA),Availability,2.2,2.0,4.4
+Authentication & authorization,Security,2.2,2.0,4.4
+Content moderation,Security,2.2,2.0,4.4
+Scalability & throughput (10k DAU+),Performance,2.0,2.0,4.0
+Indexing freshness (listings searchable),Performance,2.0,2.0,4.0
+Resilience & graceful degradation,Reliability,2.0,2.0,4.0
+Messaging & notifications reliability,Reliability,2.0,2.0,4.0

@@ -1,0 +1,22 @@
+Attribute,Category,PM I,PM D,BE I,BE D,SRE I,SRE D,SEC I,SEC D,UX I,UX D,Overall I (avg),Overall D (avg),Priority = I_avg * D_avg
+Fraud & abuse prevention,Security,3,2,2,2,3,2,2,2,3,2,2.6,2.0,5.2
+Search relevance & personalization,Usability,3,2,3,2,2,2,2,2,3,2,2.6,2.0,5.2
+Page & search response time (p95),Performance,3,2,2,2,2,2,2,2,3,2,2.4,2.0,4.8
+Data integrity & consistency,Reliability,3,2,2,2,2,2,2,2,3,2,2.4,2.0,4.8
+Data privacy & DPDP compliance,Security,2,2,2,2,2,2,3,2,3,2,2.4,2.0,4.8
+Service availability (uptime SLA),Availability,2,2,2,2,2,2,2,2,3,2,2.2,2.0,4.4
+Authentication & authorization,Security,2,2,2,2,2,2,2,2,3,2,2.2,2.0,4.4
+Content moderation,Security,2,2,2,2,2,2,2,2,3,2,2.2,2.0,4.4
+Scalability & throughput (10k DAU+),Performance,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+Indexing freshness (listings searchable),Performance,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+Resilience & graceful degradation,Reliability,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+Messaging & notifications reliability,Reliability,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+Disaster recovery & backup (RPO/RTO),Reliability,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+Modifiability/extensibility,Maintainability,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+Deployability & release safety,Maintainability,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+Testability & automation,Maintainability,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+Interoperability & integration,Maintainability,2,2,2,2,2,2,2,2,2,2,2.0,2.0,4.0
+"Observability (logs, metrics, tracing)",Maintainability,1,2,2,2,1,2,1,2,1,2,1.2,2.0,2.4
+Internationalization readiness,Usability,1,2,2,2,2,1,1,1,2,1,1.6,1.4,2.24
+Discoverability & accessibility,Usability,2,1,2,1,2,1,2,1,2,1,2.0,1.0,2.0
+Cost efficiency (cloud spend),Performance,2,1,1,2,1,2,1,1,2,1,1.4,1.4,1.96
