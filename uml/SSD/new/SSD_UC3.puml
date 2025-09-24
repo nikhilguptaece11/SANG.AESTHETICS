@@ -1,0 +1,24 @@
+@startuml
+skinparam sequenceArrowingStyle solid
+
+actor Buyer
+participant "C2C Marketplace" as System
+
+title UC_03: View Home Page
+
+Buyer -> System: Opens the home page
+activate System
+
+System -> System: Initializes user session
+System -> System: Fetch Recommendations
+
+
+alt authenticated user
+    System --> Buyer: Shows personalized home page
+else new or guest user
+    System --> Buyer: Shows generic home page
+end
+
+deactivate System
+
+@enduml

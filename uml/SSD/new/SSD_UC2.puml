@@ -1,0 +1,18 @@
+@startuml
+skinparam sequenceArrowingStyle solid
+
+actor Buyer
+participant "C2C Marketplace" as System
+
+title UC_02: Search Product
+
+Buyer -> System: Enters search keywords
+activate System
+
+System -> System: Executes search query
+System -> System: Finds relevant results
+
+System --> Buyer: Shows search results
+deactivate System
+
+@enduml

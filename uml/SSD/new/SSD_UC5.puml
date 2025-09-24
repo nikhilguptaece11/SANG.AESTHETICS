@@ -1,0 +1,86 @@
+@startuml
+skinparam sequenceArrowingStyle solid
+
+actor Buyer
+participant "C2C Marketplace" as System
+
+title  UC_04: Personalized Recommendations
+
+
+note over Buyer,System
+Home Page Recommendations
+end note
+
+
+
+
+Buyer -> System: Opens Home page
+activate System
+
+System -> System: Generates personalized feeds
+System -> System: Include Targeted Ads
+
+
+alt existing user
+    System --> Buyer: Shows personalized recommendations
+    |||
+else new user (cold start)
+    System --> Buyer: Shows popular items
+    |||
+end
+
+deactivate System
+
+|||
+|||
+
+note over Buyer,System
+Product Detail Page Recommendations
+end note
+
+
+
+
+Buyer -> System: Opens a product page
+activate System
+
+System -> System: Generates related items for the product
+System --> Buyer: Shows recommended Related Items
+
+deactivate System
+
+@enduml
+
+@startuml
+skinparam sequenceArrowingStyle solid
+
+actor Buyer
+actor Seller
+participant "C2C Marketplace" as System
+
+title  UC_05: Secure Chat Messenger
+
+' Step 1: Chat Initiation (Happens once)
+Buyer -> System: Initiates chat with Seller
+activate System
+System --> Seller: Relays new chat request
+deactivate System
+
+' Subsequent messages and offers occur in a loop
+loop until offer accepted or chat ended
+
+    Seller -> System: Sends message or offer
+    activate System
+    System -> System: Runs content filtering
+    System --> Buyer: Relays message or offer
+    deactivate System
+
+    Buyer -> System: Sends reply or counter-offer
+    activate System
+    System -> System: Runs content filtering
+    System --> Seller: Relays reply or counter-offer
+    deactivate System
+
+end
+
+@enduml

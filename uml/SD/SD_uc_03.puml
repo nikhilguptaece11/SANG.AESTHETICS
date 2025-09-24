@@ -1,0 +1,54 @@
+@startuml
+autonumber
+
+actor Buyer
+boundary "HomeScreen" as Boundary
+boundary ApiGateway
+control "HomeController" as Controller
+control "RecommendationController" as RecoController
+
+title Sequence Diagram for UC_03: View Home Page 
+
+Buyer -> Boundary: Opens the application
+activate Boundary
+
+Boundary -> ApiGateway: GET /home
+activate ApiGateway
+
+ApiGateway -> Controller: getHomePageContent(userID)
+activate Controller
+
+note over Controller
+  Initializes user session and
+  checks for user information.
+end note
+
+alt authenticated user
+    ' Included call to UC_04 logic for personalization
+    Controller -> RecoController: getRecommendations(userID, context='home')
+    activate RecoController
+    RecoController --> Controller: {personalizedItems}
+    deactivate RecoController
+    
+    Controller -> Controller: Assemble personalized page
+    
+else new or guest user
+    ' Alternate flow for new/guest users
+    Controller -> RecoController: getGenericRecommendations(context='home')
+    activate RecoController
+    RecoController --> Controller: {genericItems}
+    deactivate RecoController
+    
+    Controller -> Controller: Assemble generic page
+end
+
+Controller --> ApiGateway: {pageContent}
+deactivate Controller
+
+ApiGateway --> Boundary: 200 OK {pageContent}
+deactivate ApiGateway
+
+Boundary --> Buyer: Displays final home page
+deactivate Boundary
+
+@enduml

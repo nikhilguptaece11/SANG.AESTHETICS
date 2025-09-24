@@ -1,0 +1,75 @@
+@startuml
+autonumber
+
+actor Seller
+boundary "ListingCreationScreen" as Boundary
+boundary ApiGateway
+control "ListingController" as Controller
+control "ModerationController" as ModController
+entity "ListingDB" as EntityDB
+control "SearchService" as SearchService
+
+group Validation & Preview
+    Seller -> Boundary: Fills form, clicks "Preview"
+    activate Boundary
+    Boundary -> ApiGateway: POST /listings/preview (listingDetails)
+    activate ApiGateway
+    ApiGateway -> Controller: validateAndPreview(listingDetails)
+    activate Controller
+    
+    ' #5: Content Moderation Step
+    Controller -> ModController: checkContent(details)
+    activate ModController
+    
+    alt success (moderation passed)
+        ModController --> Controller: {status: 'approved'}
+        deactivate ModController
+
+        Controller -> EntityDB: saveDraft(details)
+        activate EntityDB
+        EntityDB --> Controller: {draftID}
+        deactivate EntityDB
+
+        Controller --> ApiGateway: {previewData, draftID}
+        ApiGateway --> Boundary: 200 OK {previewData, draftID}
+        Boundary --> Seller: Displays Preview Page
+
+    else failure (moderation failed)
+        ModController --> Controller: {status: 'rejected', reason}
+        deactivate ModController
+        
+        Controller --> ApiGateway: {error: 'policy violation', reason}
+        ApiGateway --> Boundary: 400 Bad Request {reason, fixOptions}
+        Boundary --> Seller: Shows validation errors
+        note right of Seller: User can now correct the details and resubmit the form.
+    end
+    
+    deactivate Controller
+    deactivate ApiGateway
+    deactivate Boundary
+end
+
+group Final Publication
+    Seller -> Boundary: Reviews & Clicks "Publish"
+    activate Boundary
+    Boundary -> ApiGateway: POST /listings/publish (draftID)
+    activate ApiGateway
+    ApiGateway -> Controller: publish(draftID)
+    activate Controller
+
+    Controller -> EntityDB: findAndActivateDraft(draftID)
+    activate EntityDB
+    EntityDB --> Controller: {listingData, listingID}
+    deactivate EntityDB
+
+    Controller ->> SearchService: indexListing(listingData)
+    note right: Asynchronous call to Search Index
+
+    Controller --> ApiGateway: {listingID, status: 'Published'}
+    deactivate Controller
+    ApiGateway --> Boundary: 200 OK {listingID}
+    deactivate Boundary
+    Boundary --> Seller: Shows "Listing Published" confirmation
+    deactivate Boundary
+end
+@enduml

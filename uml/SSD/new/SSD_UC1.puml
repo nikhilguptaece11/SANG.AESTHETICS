@@ -1,22 +1,35 @@
+@startuml
+skinparam sequenceArrowingStyle solid
+
+actor Seller
+participant "C2C Marketplace" as System
+
+title UC_01: Product Listing Management
+
+' 1. Seller submits all details for a validation check
+Seller -> System: Submits listing for review
+activate System
+
+System -> System: Runs Content Moderation Checks
 
 
-sequenceDiagram
-    actor Seller
-    participant System as C2C Marketplace
+' 2. System responds based on the moderation outcome
+alt failure (moderation failed)
+    System --> Seller: Returns policy violations
+    Seller -> System: Submits revised details 
+else success  (moderation passed)
+    System --> Seller: Shows listing preview
+end
 
-    title SSD for UC_01: Create New Product Listing
+deactivate System
 
-    activate Seller
-    Note over Seller: Gathers all listing information.
-    Seller->>+System: createListing(listingDetails, images)
-    System-->>-Seller: confirmation(listingID, status)
-    deactivate Seller
+' 3. If validation was successful, the Seller reviews and publishes
+    Seller -> System: Reviews & Publishes the listing
+    activate System
 
-    note right of Seller
-        listingDetails include:
-        - Category
-        - Title
-        - Description
-        - Price
-        - Location
-    end note
+    System --> Seller: Confirms listing published
+    deactivate System
+
+
+@enduml
+
