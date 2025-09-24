@@ -1,0 +1,22 @@
+
+
+sequenceDiagram
+    actor Seller
+    participant System as C2C Marketplace
+
+    title SSD for UC_01: Create New Product Listing
+
+    activate Seller
+    Note over Seller: Gathers all listing information.
+    Seller->>+System: createListing(listingDetails, images)
+    System-->>-Seller: confirmation(listingID, status)
+    deactivate Seller
+
+    note right of Seller
+        listingDetails include:
+        - Category
+        - Title
+        - Description
+        - Price
+        - Location
+    end note

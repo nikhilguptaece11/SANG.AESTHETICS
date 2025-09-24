@@ -1,0 +1,55 @@
+@startuml
+left to right direction
+' skinparam actorStyle awesome
+
+' Define Actors
+actor Seller
+actor Buyer
+actor Moderators
+
+' Define External Systems
+actor "Notification Service" as NotificationService <<External System>>
+actor "Payment Service Provider" as PaymentService <<External System>>
+
+' System Boundary
+rectangle "C2C Marketplace" {
+  usecase "UC_01: Product Listing Management" as UC1
+  usecase "UC_02: Search Product" as UC2
+  usecase "UC_03: View Home Page" as UC3
+  usecase "UC_04: Get Personalized Recommendations" as UC4
+  usecase "UC_05: Secure Chat Messenger" as UC5
+  usecase "UC_06: Transaction Management" as UC6
+  usecase "UC_07: Manage User Notifications" as UC7
+  usecase "UC_08: Fraud & Risk ~ Moderation" as UC8
+}
+
+' Actor to Use Case relationships
+Seller --> UC1
+Seller --> UC5
+Seller --> UC6
+Seller --> UC7
+Seller --> UC8
+
+Buyer --> UC2
+Buyer --> UC3
+Buyer --> UC5
+Buyer --> UC6
+Buyer --> UC7
+Buyer --> UC8
+
+UC8 <-- Moderators 
+
+
+' Use Case relationships (include/extend)
+UC3 .> UC4 : <<include>>
+UC1 .> UC8 : <<include>>
+UC5 .> UC8 : <<include>>
+UC2 .> UC3 : <<extends>>
+UC5 .> UC3 : <<extends>>
+
+
+' Relationships to External Systems
+UC7 --> NotificationService
+UC6 --> PaymentService
+
+@enduml
