@@ -1,0 +1,501 @@
+!rm -rf ~/.local/share/weaviate
+import weaviate, os
+from weaviate import EmbeddedOptions
+import openai
+
+from dotenv import load_dotenv, find_dotenv
+_ = load_dotenv(find_dotenv()) # read local .env file
+openai.api_key = os.environ['OPENAI_API_KEY']
+
+client = weaviate.Client(
+    embedded_options=EmbeddedOptions(),
+    additional_headers={
+        "X-OpenAI-BaseURL": os.environ['OPENAI_API_BASE'],
+        "X-OpenAI-Api-Key": openai.api_key  # Replace this with your actual key
+    }
+)
+print(f"Client created? {client.is_ready()}")
+
+
+
+# --- Define Data: Subcategory Descriptions ---
+# ... (Keep existing data) ...
+subcategory_data = [
+    {"subcategory_name": "Used Cars", "description": "Buy or sell used, second-hand, pre-owned cars. Listings for hatchbacks, sedans, SUVs, MPVs, and luxury vehicles. Brands: Maruti Suzuki, Hyundai, Honda, Toyota, Tata Motors, Mahindra, BMW, Mercedes, Audi."},
+    {"subcategory_name": "Motorcycles", "description": "Buy or sell used, second-hand motorcycles and motorbikes. Listings for sports bikes, cruisers, choppers, touring bikes. Brands: Royal Enfield (Classic, Bullet), Harley-Davidson, Bajaj (Pulsar), TVS (Apache), Honda, Yamaha (R15), Suzuki, KTM, Kawasaki."},
+    {"subcategory_name": "Scooters", "description": "Buy or sell used, second-hand scooters. City commuting two-wheelers, scooty. Models: Honda Activa, TVS Jupiter, Suzuki Access, Ola Electric, Ather, Vespa."},
+    {"subcategory_name": "Rental Apartments", "description": "Find apartments, flats, and multi-bedroom units for rent. Search for 1BHK, 2BHK, 3BHK, studio apartments, or penthouses. Properties for lease, monthly rent, furnished, semi-furnished, or unfurnished."},
+    {"subcategory_name": "Rental Houses", "description": "Find independent houses, villas, bungalows, or row houses for rent. Properties for lease, family homes, gated communities."},
+    {"subcategory_name": "Mobile Phones", "description": "Buy or sell used, second-hand mobile phones and smartphones. Find deals on Apple iPhone (12, 13, 14, 15 Pro), Samsung Galaxy (S series, A series), OnePlus, Google Pixel, Xiaomi (Redmi), Vivo, Oppo."},
+    {"subcategory_name": "Mobile Accessories", "description": "Shop for mobile and tablet accessories. Includes protective cases, covers, screen guards, tempered glass, chargers (wall, car, wireless), power banks, cables (USB-C, Lightning), earphones, headphones (wired, bluetooth, TWS), smartwatches, and fitness bands."},
+    {"subcategory_name": "TVs", "description": "Televisions for sale. Find Smart TVs, LED, OLED, QLED, 4K, 8K, and home theatre projectors. Brands: Samsung, LG, Sony, OnePlus, Xiaomi (Mi TV). All sizes: 32 inch, 43 inch, 55 inch, 65 inch."},
+    {"subcategory_name": "Kitchen Appliances", "description": "Buy or sell used, second-hand home and kitchen appliances. Includes refrigerators (fridge, single door, double door), washing machines (top load, front load), microwave ovens, air conditioners (ACs - window, split), water purifiers (RO), geysers, dishwashers, mixers, grinders."},
+    {"subcategory_name": "Laptops", "description": "Find used, second-hand computers and laptops. Includes desktop PCs, Apple MacBooks (Air, Pro), Windows laptops (Dell, HP, Lenovo, Asus), gaming laptops (ROG, Alienware), business laptops, and computer monitors."},
+    {"subcategory_name": "Sofas & Dining", "description": "Furniture for living and dining rooms. Buy or sell new or used sofa sets, couches, L-shaped sofas, recliners, lounge chairs, coffee tables, and dining table sets (4-seater, 6-seater)."},
+    {"subcategory_name": "Beds & Wardrobes", "description": "Find new and used bedroom furniture. Includes beds (single, double, queen size, king size), wardrobes, almirahs, closets, storage cabinets, mattresses, and bedside tables."},
+    {"subcategory_name": "Men's Clothing", "description": "Shop for men's fashion and apparel. Includes casual shirts, formal shirts, t-shirts, polos, jeans, trousers, chinos, suits, blazers, jackets, sweaters, ethnic wear (kurtas), and sportswear (track pants, jerseys)."},
+    {"subcategory_name": "Women's Clothing", "description": "Shop for women's fashion and apparel. Includes dresses (casual, formal), tops, tunics, ethnic wear (kurtis, sarees, lehengas), jeans, trousers, skirts, jackets, sweaters, activewear, and lingerie."},
+    {"subcategory_name": "Books", "description": "Buy or sell new and used books. Includes fiction novels, non-fiction, self-help, business books, educational textbooks (NCERT), competitive exam guides (UPSC, JEE, NEET), magazines, and comics."},
+    {"subcategory_name": "Sports Equipment", "description": "Find sports, gym, and fitness equipment. Includes cricket gear (bats, balls, pads), badminton racquets, shuttlecocks, footballs, basketballs, home gym equipment (dumbbells, weights, benches), treadmills, and exercise cycles."},
+    {"subcategory_name": "Dogs & Puppies", "description": "Dogs and puppies for sale or adoption. Find various breeds: Labrador, German Shepherd, Golden Retriever, Pug, Beagle, Rottweiler. Pet accessories and dog food."},
+    {"subcategory_name": "Cats & Kittens", "description": "Cats and kittens for sale or adoption. Find breeds: Persian, Siamese, Bengal, and domestic short-hair (Indie). Pet accessories and cat food."},
+    {"subcategory_name": "Tutoring", "description": "Find education and learning services. Includes private tutors (for Maths, Science, Physics, Chemistry, English), home tuition, coaching classes (for 10th, 12th, competitive exams), music lessons (guitar, piano), dance classes, and language training."},
+    {"subcategory_name": "Home Cleaning", "description": "Services for home maintenance, repair, and cleaning. Includes professional house cleaning (deep cleaning, bathroom cleaning), plumbing services, electricians, carpenters, house painting, appliance repair (AC servicing, washing machine repair), and pest control."},
+    {"subcategory_name": "Data Entry Jobs", "description": "Find jobs in Data Entry, Computer Operator, and Back Office roles. Includes typing jobs, work from home (WFH) data entry, part-time, full-time, and freelance positions."},
+    {"subcategory_name": "Sales Jobs", "description": "Find jobs in Sales, Marketing, and Business Development (BDM). Includes field sales, inside sales, sales executive, manager roles, and marketing positions. Full-time and part-time."},
+    {"subcategory_name": "Driver Jobs", "description": "Find driving jobs and positions. Looking for a car driver, taxi driver (Uber, Ola), truck driver, delivery driver, or personal chauffeur. Full-time and part-time driver vacancies."},
+]
+
+
+# --- Schema Definition ---
+# ... (Keep existing schema definition code) ...
+collection_name = "Subcategory"
+if client.schema.exists(collection_name):
+    print(f"Deleting existing collection: {collection_name}")
+    client.schema.delete_class(collection_name)
+
+class_obj = {
+    "class": collection_name,
+    "description": "Stores descriptive strings for product/service subcategories",
+    "vectorizer": "text2vec-openai", # Specify OpenAI as the vectorizer
+    "moduleConfig": {
+        "text2vec-openai": {
+            "model": "ada", # Use ada-002 for embeddings
+            "modelVersion": "002",
+            "type": "text",
+            # "baseURL": openai_api_base # Uncomment if using custom base URL
+        }
+    },
+    "properties": [
+        {
+            "name": "subcategory_name",
+            "dataType": ["text"],
+            "description": "Short name of the subcategory",
+        },
+        {
+            "name": "description",
+            "dataType": ["text"],
+            "description": "Detailed description of the subcategory for embedding",
+            "moduleConfig": { # Important: Specify which field to vectorize
+                 "text2vec-openai": {
+                    "skip": False, # Do not skip
+                    "vectorizePropertyName": False # Do not vectorize the *name* 'description', vectorize its *content*
+                 }
+            }
+        },
+    ]
+}
+
+print(f"Creating collection: {collection_name}")
+client.schema.create_class(class_obj)
+print("Schema created successfully.")
+
+
+# --- Data Ingestion ---
+# ... (Keep existing ingestion code) ...
+print("Starting data ingestion...")
+with client.batch.configure(batch_size=10) as batch:
+    for i, item in enumerate(subcategory_data):
+        print(f"Adding subcategory: {i+1} - {item['subcategory_name']}")
+        properties = {
+            "subcategory_name": item["subcategory_name"],
+            "description": item["description"],
+        }
+        batch.add_data_object(
+            data_object=properties,
+            class_name=collection_name
+        )
+print("Data ingestion complete.")
+
+
+# --- Verification ---
+# ... (Keep existing verification code) ...
+count_result = client.query.aggregate(collection_name).with_meta_count().do()
+print("\n--- Verification ---")
+print(json.dumps(count_result, indent=2))
+
+
+# --- Sample Queries ---
+# ... (Keep existing sample_queries list) ...
+sample_queries = [
+    "i need to buy a sofa for my living room.",
+    "looking for a cheap phone",
+    "need a driver for my car",
+    "rent 2 bhk near me",
+    "sell my old laptop",
+    "private tutor for physics class 12",
+    "job opening for data entry operator",
+    "furry friend for my kid", # Should match Dogs or Cats
+    "shiny box for talking", # Should match Mobile Phones
+    "big screen for movies", # Should match TVs
+    "lessons for my brain", # Should match Tutoring
+    "make my house clean", # Should match Home Cleaning
+    "clothes for work guy", # Should match Men's Clothing
+    "Oneplus device", #
+    "samsung LED", # 
+    "electronics for kitchen", # Should match Kitchen Appliances (Refrigerators)
+    "type on computer job", # Should match Data Entry Jobs
+    "samsung screen",         # (TV? Phone? Repair? Buy?)
+    "honda",                  # (Car? Motorcycle? Generator?)
+    "maths",                  # (Tutor? Book?)
+    "kitchen help",           # (Appliance? Job? Cleaning service?)
+    "fast delivery",          # (Job? Service?)
+    "iphone 12",              # (Buy? Sell? Repair? Case?)
+    "wooden table",           # (Buy? Sell? Used?)
+    "driver",                 # (Job? Looking for a service?)
+    "clean my house",         # (Service? Product?)
+    "cheap rent",             # (Apartment? House?)
+    "part time",              # (Job? What kind?)
+    "running shoes",          # (Men's? Women's? Buy?)
+    "lens",                   # (Camera? Glasses?)
+    "paint",                  # (House painting service? Art supplies?)
+    "repair",                 # (Phone? Car? Appliance?)
+
+
+]
+
+print("\n--- Running Sample Queries ---")
+
+for query in sample_queries:
+    print(f"\nUser Query: '{query}'")
+
+    try:
+        # Define the nearText search argument more explicitly
+        near_text_filter = {
+            "concepts": [query],
+            # Optionally add targetVectors if you want to specify which vectorizer to use (though usually inferred)
+            # "targetVectors": ["default"] # Assuming 'default' or adjust if named vectorizer used
+        }
+
+        # Apply nearText filter and retrieve results
+        response = (
+            client.query
+            .get(collection_name, ["subcategory_name"]) # Only need subcategory_name
+            .with_near_text(near_text_filter) # Apply the search filter
+            .with_limit(3) # Get the top 3 matches
+            .with_additional(["distance"]) # Include the distance score
+            .do()
+        )
+
+        # More detailed checking of the response structure
+        if response is None:
+            print("  Query returned None response.")
+            continue
+
+        if "errors" in response:
+# ... existing code ...
+            continue # Skip to next query if there's a GraphQL error
+
+        if ("data" in response and
+# ... existing code ...
+                collection_name in response["data"]["Get"] and
+                response["data"]["Get"][collection_name]):
+
+            top_matches = response["data"]["Get"][collection_name]
+            print(f"  Top {len(top_matches)} Matches:")
+
+            for i, match in enumerate(top_matches):
+                name = match.get("subcategory_name", "N/A")
+
+                distance = "N/A"
+                if "_additional" in match and match["_additional"] is not None and "distance" in match["_additional"]:
+                     # Ensure distance is not None before formatting
+                     dist_val = match['_additional']['distance']
+                     if dist_val is not None:
+                          distance = f"{dist_val:.4f}"
+                     else:
+                          distance = "None"
+
+                print(f"    {i+1}. Subcategory: '{name}' (Distance: {distance})") # Lower distance = better match
+        else:
+            # This case means the query ran fine, but found no results matching the criteria
+# ... existing code ...
+            # Optionally print the raw response for debugging if needed
+            print(f"  Raw response: {json.dumps(response, indent=2)}")
+
+    except Exception as e:
+        print(f"  An unexpected error occurred during the query: {e}")
+        print("  Traceback:")
+        traceback.print_exc() # Print full traceback for debugging
+
+print("\n--- Queries Complete ---")
+
+# Optional: Clean up embedded Weaviate instance on exit
+# client = None
+
+
+
+
+
+
+output
+Deleting existing collection: Subcategory
+Creating collection: Subcategory
+Schema created successfully.
+Starting data ingestion...
+Adding subcategory: 1 - Used Cars
+Adding subcategory: 2 - Motorcycles
+Adding subcategory: 3 - Scooters
+Adding subcategory: 4 - Rental Apartments
+Adding subcategory: 5 - Rental Houses
+Adding subcategory: 6 - Mobile Phones
+Adding subcategory: 7 - Mobile Accessories
+Adding subcategory: 8 - TVs
+Adding subcategory: 9 - Kitchen Appliances
+Adding subcategory: 10 - Laptops
+{"action":"hnsw_vector_cache_prefill","count":1000,"index_id":"subcategory_KoWKIKmxylkI","level":"info","limit":1000000000000,"msg":"prefilled vector cache","time":"2025-10-25T12:20:46Z","took":59087}
+Adding subcategory: 11 - Sofas & Dining
+Adding subcategory: 12 - Beds & Wardrobes
+Adding subcategory: 13 - Men's Clothing
+Adding subcategory: 14 - Women's Clothing
+Adding subcategory: 15 - Books
+Adding subcategory: 16 - Sports Equipment
+Adding subcategory: 17 - Dogs & Puppies
+Adding subcategory: 18 - Cats & Kittens
+Adding subcategory: 19 - Tutoring
+Adding subcategory: 20 - Home Cleaning
+Adding subcategory: 21 - Data Entry Jobs
+Adding subcategory: 22 - Sales Jobs
+Adding subcategory: 23 - Driver Jobs
+Data ingestion complete.
+
+--- Verification ---
+{
+  "data": {
+    "Aggregate": {
+      "Subcategory": [
+        {
+          "meta": {
+            "count": 23
+          }
+        }
+      ]
+    }
+  }
+}
+
+--- Running Sample Queries ---
+
+User Query: 'i need to buy a sofa for my living room.'
+  Top 3 Matches:
+    1. Subcategory: 'Sofas & Dining' (Distance: 0.1353)
+    2. Subcategory: 'Beds & Wardrobes' (Distance: 0.1956)
+    3. Subcategory: 'Rental Apartments' (Distance: 0.2216)
+
+User Query: 'looking for a cheap phone'
+  Top 3 Matches:
+    1. Subcategory: 'Mobile Phones' (Distance: 0.1473)
+    2. Subcategory: 'Mobile Accessories' (Distance: 0.2191)
+    3. Subcategory: 'Laptops' (Distance: 0.2225)
+
+User Query: 'need a driver for my car'
+  Top 3 Matches:
+    1. Subcategory: 'Driver Jobs' (Distance: 0.1819)
+    2. Subcategory: 'Used Cars' (Distance: 0.2249)
+    3. Subcategory: 'Scooters' (Distance: 0.2540)
+
+User Query: 'rent 2 bhk near me'
+  Top 3 Matches:
+    1. Subcategory: 'Rental Apartments' (Distance: 0.1490)
+    2. Subcategory: 'Rental Houses' (Distance: 0.2131)
+    3. Subcategory: 'Beds & Wardrobes' (Distance: 0.2392)
+
+User Query: 'sell my old laptop'
+  Top 3 Matches:
+    1. Subcategory: 'Laptops' (Distance: 0.1590)
+    2. Subcategory: 'Mobile Phones' (Distance: 0.2149)
+    3. Subcategory: 'Kitchen Appliances' (Distance: 0.2308)
+
+User Query: 'private tutor for physics class 12'
+  Top 3 Matches:
+    1. Subcategory: 'Tutoring' (Distance: 0.1345)
+    2. Subcategory: 'Books' (Distance: 0.2231)
+    3. Subcategory: 'Driver Jobs' (Distance: 0.2587)
+
+User Query: 'job opening for data entry operator'
+  Top 3 Matches:
+    1. Subcategory: 'Data Entry Jobs' (Distance: 0.1087)
+    2. Subcategory: 'Driver Jobs' (Distance: 0.2055)
+    3. Subcategory: 'Sales Jobs' (Distance: 0.2192)
+
+User Query: 'furry friend for my kid'
+  Top 3 Matches:
+    1. Subcategory: 'Cats & Kittens' (Distance: 0.2306)
+    2. Subcategory: 'Dogs & Puppies' (Distance: 0.2339)
+    3. Subcategory: 'Beds & Wardrobes' (Distance: 0.2619)
+
+User Query: 'shiny box for talking'
+  Top 3 Matches:
+    1. Subcategory: 'Mobile Accessories' (Distance: 0.2587)
+    2. Subcategory: 'Mobile Phones' (Distance: 0.2638)
+    3. Subcategory: 'Books' (Distance: 0.2754)
+
+User Query: 'big screen for movies'
+  Top 3 Matches:
+    1. Subcategory: 'TVs' (Distance: 0.1780)
+    2. Subcategory: 'Mobile Phones' (Distance: 0.2249)
+    3. Subcategory: 'Mobile Accessories' (Distance: 0.2328)
+
+User Query: 'lessons for my brain'
+  Top 3 Matches:
+    1. Subcategory: 'Tutoring' (Distance: 0.2245)
+    2. Subcategory: 'Books' (Distance: 0.2640)
+    3. Subcategory: 'Dogs & Puppies' (Distance: 0.2773)
+
+User Query: 'make my house clean'
+  Top 3 Matches:
+    1. Subcategory: 'Home Cleaning' (Distance: 0.1766)
+    2. Subcategory: 'Kitchen Appliances' (Distance: 0.2351)
+    3. Subcategory: 'Rental Houses' (Distance: 0.2354)
+
+User Query: 'clothes for work guy'
+  Top 3 Matches:
+    1. Subcategory: 'Men's Clothing' (Distance: 0.1500)
+    2. Subcategory: 'Women's Clothing' (Distance: 0.1989)
+    3. Subcategory: 'Mobile Accessories' (Distance: 0.2431)
+
+User Query: 'Oneplus device'
+  Top 3 Matches:
+    1. Subcategory: 'Mobile Phones' (Distance: 0.1807)
+    2. Subcategory: 'Mobile Accessories' (Distance: 0.2115)
+    3. Subcategory: 'TVs' (Distance: 0.2288)
+
+User Query: 'samsung LED'
+  Top 3 Matches:
+    1. Subcategory: 'TVs' (Distance: 0.1530)
+    2. Subcategory: 'Mobile Phones' (Distance: 0.2192)
+    3. Subcategory: 'Mobile Accessories' (Distance: 0.2455)
+
+User Query: 'electronics for kitchen'
+  Top 3 Matches:
+    1. Subcategory: 'Kitchen Appliances' (Distance: 0.1532)
+    2. Subcategory: 'Mobile Accessories' (Distance: 0.2092)
+    3. Subcategory: 'TVs' (Distance: 0.2113)
+
+User Query: 'type on computer job'
+  Top 3 Matches:
+    1. Subcategory: 'Data Entry Jobs' (Distance: 0.1612)
+    2. Subcategory: 'Driver Jobs' (Distance: 0.2312)
+    3. Subcategory: 'Laptops' (Distance: 0.2378)
+
+User Query: 'samsung screen'
+  Top 3 Matches:
+    1. Subcategory: 'TVs' (Distance: 0.1844)
+    2. Subcategory: 'Mobile Phones' (Distance: 0.1919)
+    3. Subcategory: 'Mobile Accessories' (Distance: 0.2096)
+
+User Query: 'honda'
+  Top 3 Matches:
+    1. Subcategory: 'Used Cars' (Distance: 0.2007)
+    2. Subcategory: 'Scooters' (Distance: 0.2023)
+    3. Subcategory: 'Motorcycles' (Distance: 0.2076)
+
+User Query: 'maths'
+  Top 3 Matches:
+    1. Subcategory: 'Tutoring' (Distance: 0.1751)
+    2. Subcategory: 'Books' (Distance: 0.2182)
+    3. Subcategory: 'Sports Equipment' (Distance: 0.2439)
+
+User Query: 'kitchen help'
+  Top 3 Matches:
+    1. Subcategory: 'Kitchen Appliances' (Distance: 0.1825)
+    2. Subcategory: 'Sofas & Dining' (Distance: 0.2157)
+    3. Subcategory: 'Home Cleaning' (Distance: 0.2164)
+
+User Query: 'fast delivery'
+  Top 3 Matches:
+    1. Subcategory: 'Mobile Accessories' (Distance: 0.2403)
+    2. Subcategory: 'Mobile Phones' (Distance: 0.2500)
+    3. Subcategory: 'Driver Jobs' (Distance: 0.2539)
+
+User Query: 'iphone 12'
+  Top 3 Matches:
+    1. Subcategory: 'Mobile Phones' (Distance: 0.1600)
+    2. Subcategory: 'Mobile Accessories' (Distance: 0.2084)
+    3. Subcategory: 'Laptops' (Distance: 0.2594)
+
+User Query: 'wooden table'
+  Top 3 Matches:
+    1. Subcategory: 'Sofas & Dining' (Distance: 0.1772)
+    2. Subcategory: 'Beds & Wardrobes' (Distance: 0.2067)
+    3. Subcategory: 'Mobile Accessories' (Distance: 0.2356)
+
+User Query: 'driver'
+  Top 3 Matches:
+    1. Subcategory: 'Driver Jobs' (Distance: 0.1899)
+    2. Subcategory: 'Used Cars' (Distance: 0.2456)
+    3. Subcategory: 'Scooters' (Distance: 0.2509)
+
+User Query: 'clean my house'
+  Top 3 Matches:
+    1. Subcategory: 'Home Cleaning' (Distance: 0.1621)
+    2. Subcategory: 'Kitchen Appliances' (Distance: 0.2235)
+    3. Subcategory: 'Rental Houses' (Distance: 0.2355)
+
+User Query: 'cheap rent'
+  Top 3 Matches:
+    1. Subcategory: 'Rental Apartments' (Distance: 0.1810)
+    2. Subcategory: 'Rental Houses' (Distance: 0.1971)
+    3. Subcategory: 'Mobile Phones' (Distance: 0.2255)
+
+User Query: 'part time'
+  Top 3 Matches:
+    1. Subcategory: 'Data Entry Jobs' (Distance: 0.1962)
+    2. Subcategory: 'Driver Jobs' (Distance: 0.2044)
+    3. Subcategory: 'Sales Jobs' (Distance: 0.2107)
+
+User Query: 'running shoes'
+  Top 3 Matches:
+    1. Subcategory: 'Sports Equipment' (Distance: 0.2115)
+    2. Subcategory: 'Men's Clothing' (Distance: 0.2241)
+    3. Subcategory: 'Women's Clothing' (Distance: 0.2252)
+
+User Query: 'lens'
+  Top 3 Matches:
+    1. Subcategory: 'Laptops' (Distance: 0.2395)
+    2. Subcategory: 'Mobile Accessories' (Distance: 0.2451)
+    3. Subcategory: 'TVs' (Distance: 0.2538)
+
+User Query: 'paint'
+  Top 3 Matches:
+    1. Subcategory: 'Home Cleaning' (Distance: 0.2137)
+    2. Subcategory: 'Men's Clothing' (Distance: 0.2459)
+    3. Subcategory: 'Women's Clothing' (Distance: 0.2480)
+
+User Query: 'repair'
+  Top 3 Matches:
+    1. Subcategory: 'Home Cleaning' (Distance: 0.2052)
+    2. Subcategory: 'Mobile Phones' (Distance: 0.2297)
+    3. Subcategory: 'Kitchen Appliances' (Distance: 0.2307)
+
+User Query: 'baby'
+  Top 3 Matches:
+    1. Subcategory: 'Cats & Kittens' (Distance: 0.2614)
+    2. Subcategory: 'Dogs & Puppies' (Distance: 0.2624)
+    3. Subcategory: 'Men's Clothing' (Distance: 0.2633)
+
+User Query: 'sofa'
+  Top 3 Matches:
+    1. Subcategory: 'Sofas & Dining' (Distance: 0.1544)
+    2. Subcategory: 'Beds & Wardrobes' (Distance: 0.2203)
+    3. Subcategory: 'Scooters' (Distance: 0.2223)
+
+User Query: 'work from home'
+  Top 3 Matches:
+    1. Subcategory: 'Data Entry Jobs' (Distance: 0.1522)
+    2. Subcategory: 'Sales Jobs' (Distance: 0.2006)
+    3. Subcategory: 'Driver Jobs' (Distance: 0.2023)
+
+User Query: 'old coins'
+  Top 3 Matches:
+    1. Subcategory: 'Books' (Distance: 0.2430)
+    2. Subcategory: 'Kitchen Appliances' (Distance: 0.2472)
+    3. Subcategory: 'Scooters' (Distance: 0.2472)
+
+User Query: 'guitar lessons'
+  Top 3 Matches:
+    1. Subcategory: 'Tutoring' (Distance: 0.1841)
+    2. Subcategory: 'Books' (Distance: 0.2471)
+    3. Subcategory: 'Sports Equipment' (Distance: 0.2550)
+
+--- Queries Complete ---
